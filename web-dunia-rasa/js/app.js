@@ -14,4 +14,5 @@ navBtnDOM.addEventListener('click', () => {
   links.classList.toggle('show-links')
 })
 
+var endpoint = 'http://localhost:3000/api/';
 var app = angular.module('myApp', []);

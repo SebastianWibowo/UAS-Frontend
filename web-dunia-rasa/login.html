@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/auth.css" />
+</head>
+<body>
+  <div class="login-container" ng-controller="LoginController">
+    <form ng-submit="login()" class="login-form">
+      <h2><a href="./index.html">Dunia Rasa</a></h2>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          ng-model="loginData.email"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          ng-model="loginData.password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+      <button type="submit" class="btn">Login</button>
+      <p>Belum memiliki akun? <a href="./register.html">Daftar di sini</a></p>
+      <p class="error-message" ng-show="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="./js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/auth.css" />
+</head>
+<body>
+  <div class="login-container" ng-controller="RegisterController">
+    <form ng-submit="register()" class="register-form">
+      <h2>Register</h2>
+      <div class="form-group">
+        <label for="name">Nama</label>
+        <input
+          type="text"
+          id="name"
+          ng-model="registerData.name"
+          placeholder="Enter your name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          ng-model="registerData.email"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          ng-model="registerData.password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+      <button type="submit" class="btn">Register</button>
+      <p>Sudah memiliki akun? <a href="./login.html">Login di sini</a></p>
+      <p class="success-message" ng-show="successMessage">{{ successMessage }}</p>
+      <p class="error-message" ng-show="errorMessage">{{ errorMessage }}</p>
+      <p style="visibility: hidden;">Registration failed. Please try again.Registration failed. Please try again.</p>
+    </form>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="./js/auth.js"></script>
+</body>
+</html>
