@@ -34,3 +34,21 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.profilUser = async (req, res) => {
+  try {
+    const userId = req.user.id;  // Mengambil userId dari req.user yang sudah di-set oleh middleware autentikasi
+
+    // Cari pengguna berdasarkan ID
+    const user = await User.findById(userId).select('-password');  // Menyaring field password untuk alasan keamanan
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Mengirimkan data pengguna yang ditemukan
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

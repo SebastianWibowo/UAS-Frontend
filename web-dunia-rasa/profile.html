@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile</title>
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/auth.css" />
+</head>
+<body>
+  <div class="profile-container" ng-controller="ProfileController">
+    <div class="profile-card">
+      <h2>Profile</h2>
+      <div class="profile-info">
+        <p><strong>Name:</strong> {{ profile.name }}</p>
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+        <p>
+            <a href="create-recipe.html" class="nav-link btn">
+                Buat Resep
+            </a>
+        </p>
+        <p>
+            <a href="javascript:void(0)" class="nav-link btn" ng-click="handleAuth()">
+                Logout
+            </a>
+        </p>
+      </div>
+      <div class="favorites-section">
+        <h3>Favorites</h3>
+        <ul>
+          <li ng-repeat="recipe in favoriteRecipes">
+            <a ng-href="detail-receipt.html?id={{ recipe._id }}">{{ recipe.title }}</a>
+          </li>
+        </ul>
+        <div ng-if="!isLoading && favoriteRecipes.length === 0">
+            <p>No favorite recipes found.</p> <!-- Tampilkan pesan jika tidak ada favorit -->
+          </div>
+      </div>
+
+      <p>Kembali ke <a href="./index.html">Home</a></p>
+      <p class="loading" ng-show="isLoading">Loading...</p>
+      <p class="error-message" ng-show="errorMessage">{{ errorMessage }}</p>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="./js/auth.js"></script>
+</body>
+</html>
