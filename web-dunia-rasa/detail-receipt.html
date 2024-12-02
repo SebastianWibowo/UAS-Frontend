@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title ng-controller="RecipeDetailController">{{ recipe.title }}</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+    <!-- main css -->
+    <link rel="stylesheet" href="./css/main.css" />
+    <!-- normalize -->
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+  </head>
+  <body>
+    <!-- nav  -->
+    <nav class="navbar">
+      <div class="nav-center" ng-controller="NavbarController">
+        <div class="nav-header">
+          <a href="index.html" class="nav-logo">
+            <img src="./assets/logo.svg" alt="Dunia Rasa" />
+          </a>
+          <button class="nav-btn btn">
+            <i class="fas fa-align-justify"></i>
+          </button>
+        </div>
+        <div class="nav-links">
+          <a href="index.html" class="nav-link"> Home </a>
+          <a href="about.html" class="nav-link"> About </a>
+          <a href="tags.html" class="nav-link"> Tags </a>
+          <a href="recipes.html" class="nav-link"> Recipes </a>
+          <a href="profile.html" class="nav-link" ng-if="isLoggedIn"> Profile </a>
+          <a href="javascript:void(0)" class="nav-link" ng-click="handleAuth()">
+            {{ isLoggedIn ? 'Logout' : 'Login' }}
+          </a>
+        </div>
+      </div>
+    </nav>
+    <!-- end of nav -->
+    <main class="page">
+
+      <div class="recipe-page" ng-controller="RecipeDetailController">
+        <section class="recipe-hero">
+          <img ng-src="{{ recipe.photo || './assets/recipes/rendang.jpeg' }}" class="img recipe-hero-img" alt="{{ recipe.title }}" />
+          <article class="recipe-info">
+            <h2>{{ recipe.title }}</h2>
+            <p>{{ recipe.description }}</p>
+            <div class="recipe-icons">
+              <article>
+                <i class="fas fa-clock"></i>
+                <h5>prep time</h5>
+                <p>{{ recipe.prepTime }} min</p>
+              </article>
+              <article>
+                <i class="far fa-clock"></i>
+                <h5>cook time</h5>
+                <p>{{ recipe.cookTime }} min</p>
+              </article>
+              <article>
+                <i class="fas fa-user-friends"></i>
+                <h5>serving</h5>
+                <p>{{ recipe.serving }} servings</p>
+              </article>
+            </div>
+            <p class="recipe-tags">
+              Tags:
+              <span ng-repeat="tag in recipe.tags">
+                <a href="detail-tag.html?tags={{ tag.name }}">{{ tag.name }}</a>
+              </span>
+            </p>
+            
+            <div ng-if="isLoggedIn">
+              <button ng-click="toggleFavorite()" class="btn">
+                {{ isFavorite ? 'Remove from Favorites' : 'Add to Favorites' }}
+              </button>
+            </div>
+            <div ng-if="!isLoggedIn">
+              <p>
+                Please <a href="login.html">login</a> to manage your favorites.
+              </p>
+            </div>
+          </article>
+        </section>
+  
+        <!-- Recipe Content -->
+        <section class="recipe-content">
+          <article>
+            <h4>Instructions</h4>
+            <div ng-repeat="instruction in recipe.instructions" class="single-instruction">
+              <header>
+                <p>Step {{ instruction.step }}</p>
+                <div></div>
+              </header>
+              <p>{{ instruction.description }}</p>
+            </div>
+          </article>
+  
+          <article class="second-column">
+            <div>
+              <h4>Ingredients</h4>
+              <p ng-repeat="ingredient in recipe.ingredients track by $index" class="single-ingredient">
+                {{ ingredient }}
+              </li>
+            </div>
+            <div>
+              <h4>Tools</h4>
+              <p ng-repeat="tool in recipe.tools" class="single-tool">
+                {{ tool }}
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <!-- Comments Section -->
+        <section class="recipe-comments">
+          <h4>Comments</h4>
+          <div ng-if="recipe.comments.length > 0">
+            <div ng-repeat="comment in recipe.comments" class="single-comment">
+              <p><strong>{{ comment.userId.name || 'Anonymous' }}:</strong> {{ comment.comment }}</p>
+              <p class="comment-timestamp">{{ formatDate(comment.timestamp) }}</p>
+            </div>
+          </div>
+          <p ng-if="recipe.comments.length === 0">No comments yet. Be the first to comment!</p>
+
+          <div ng-if="isLoggedIn">
+            <h5>Add a Comment:</h5>
+            <form ng-submit="submitComment()">
+              <textarea ng-model="newComment.comment" placeholder="Write your comment..." cols="50" rows="10" required></textarea>
+              <br>
+              <button type="submit" class="btn">Submit</button>
+              <hr style="visibility: hidden;">
+            </form>
+          </div>
+          <div ng-if="!isLoggedIn">
+            <p>Please <a href="login.html">login</a> to leave a comment.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- footer -->
+    <footer class="page-footer">
+      <p> &copy; <span id="date">2024</span>
+        <span class="footer-logo">Dunia Rasa</span> Built by <a href="javascript:void(0)">Kelompok 5</a>
+      </p>
+    </footer>
+    <!-- end of footer -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="./js/app.js"></script>
+    <script>
+      function getQueryParam(param) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      app.controller('NavbarController', ['$scope', function ($scope) {
+        // Periksa apakah token ada di localStorage
+        $scope.isLoggedIn = !!localStorage.getItem('token');
+
+        // Handle Login/Logout action
+        $scope.handleAuth = function () {
+          if ($scope.isLoggedIn) {
+            // Logout: Hapus token dan refresh halaman
+            localStorage.removeItem('token');
+            $scope.isLoggedIn = false;
+            window.location.href = 'index.html'; // Redirect ke halaman utama
+          } else {
+            // Login: Redirect ke halaman login
+            window.location.href = 'login.html';
+          }
+        };
+      }]);
+
+      app.controller('RecipeDetailController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+        $scope.recipe = {};
+        $scope.isFavorite = false;
+        $scope.newComment = '';
+        $scope.isLoggedIn = !!localStorage.getItem('token');
+
+        // Format timestamp to readable date
+        $scope.formatDate = function (timestamp) {
+          return new Date(timestamp).toLocaleString();
+        };
+
+        // Fetch recipe ID from the URL
+        var recipeId = getQueryParam('id');
+        if (!recipeId) {
+          alert('No recipe ID provided!');
+          return;
+        }
+        
+        // API call to get recipe details
+        $http.get(`${endpoint}recipes/find/` + recipeId)
+          .then(function (response) {
+            $scope.recipe = response.data;
+
+            // Check if the recipe is already a favorite
+            if ($scope.isLoggedIn) {
+              const token = localStorage.getItem('token');
+              const config = { headers: { Authorization: `Bearer ${token}` } };
+
+              $http.get(`${endpoint}favorites/check/${recipeId}`, config) // API to check favorite status
+                .then(function (res) {
+                  $scope.isFavorite = res.data.isFavorite; // Set status based on API response
+                })
+                .catch(function (err) {
+                  console.error('Error checking favorite status:', err);
+                });
+            }
+          })
+          .catch(function (error) {
+            console.error('Error fetching recipe details:', error);
+          });
+
+        $scope.newComment = {
+            comment: '',
+        };
+
+        $scope.submitComment = function() {
+          if (!$scope.newComment) return;
+          // Mendapatkan token dari localStorage
+          const token = localStorage.getItem('token');
+
+          // Konfigurasi header dengan Authorization
+          const config = {
+              headers: {
+              Authorization: `Bearer ${token}`
+              }
+          };
+
+          const commentData = {
+            recipeId: recipeId,
+            comment: $scope.newComment.comment
+          };
+
+          $http.post(`${endpoint}comments/add`, commentData, config)
+            .then(function(response) {
+              $scope.recipe.comments.push(response.data.data);  // Add the new comment to the list
+              $scope.newComment.comment = '';  // Clear the input field
+            })
+            .catch(function(error) {
+              console.error('Error submitting comment:', error);
+            });
+        };
+
+        $scope.toggleFavorite = function () {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            alert('You must be logged in to manage favorites.');
+            return;
+          }
+
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+
+          const payload = {
+            recipeId: recipeId,
+          };
+
+          if ($scope.isFavorite) {
+            // Remove from favorites
+            $http.post(`${endpoint}favorites/remove`, payload, config)
+              .then(function (response) {
+                $scope.isFavorite = false; // Update status
+                alert('Recipe removed from favorites.');
+              })
+              .catch(function (error) {
+                console.error('Error removing from favorites:', error);
+                alert('Failed to remove recipe from favorites.');
+              });
+          } else {
+            // Add to favorites
+            $http.post(`${endpoint}favorites/add`, payload, config)
+              .then(function (response) {
+                $scope.isFavorite = true; // Update status
+                alert('Recipe added to favorites!');
+              })
+              .catch(function (error) {
+                console.error('Error adding to favorites:', error);
+                alert('Failed to add recipe to favorites.');
+              });
+          }
+        };
+      }]);
+    </script>
+  </body>
+</html>
