@@ -17,7 +17,7 @@
   <body>
     <!-- nav  -->
     <nav class="navbar">
-      <div class="nav-center">
+      <div class="nav-center" ng-controller="NavbarController">
         <div class="nav-header">
           <a href="index.html" class="nav-logo">
             <img src="./assets/logo.svg" alt="Dunia Rasa" />
@@ -31,8 +31,10 @@
           <a href="about.html" class="nav-link"> About </a>
           <a href="tags.html" class="nav-link"> Tags </a>
           <a href="recipes.html" class="nav-link"> Recipes </a>
-          <a href="" class="nav-link"> Profile </a>
-          <a href="" class="nav-link">Login </a>
+          <a href="profile.html" class="nav-link" ng-if="isLoggedIn"> Profile </a>
+          <a href="javascript:void(0)" class="nav-link" ng-click="handleAuth()">
+            {{ isLoggedIn ? 'Logout' : 'Login' }}
+          </a>
         </div>
       </div>
     </nav>
@@ -48,16 +50,67 @@
         <!-- needs fixes -->
         <img src="./assets/main.jpg" alt="foods in table" class="img about-img" />
       </section>
+      <!-- recipes list -->
+      <div class="recipes-list" ng-controller="RecipesController">
+        <a ng-repeat="recipe in recipes" href="detail-receipt.html?id={{ recipe.id }}" class="recipe">
+          <img ng-src="{{ recipe.photo }}" class="img recipe-img" alt="{{ recipe.title }}" />
+          <h5>{{ recipe.title }}</h5>
+          <p>Prep : {{ recipe.prepTime }} min | Cook : {{ recipe.cookTime }} min</p>
+        </a>
+      </div>
+      <!-- end of recipes list -->
       <!--end of main-->
     </main>
     <!-- footer -->
     <footer class="page-footer">
       <p> &copy; <span id="date">2024</span>
-        <span class="footer-logo">Dunia Rasa</span> Built by <a href="404.html">Kelompok 5</a>
+        <span class="footer-logo">Dunia Rasa</span> Built by <a href="javascript:void(0)">Kelompok 5</a>
       </p>
     </footer>
     <!-- end of footer -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="./js/app.js"></script>
+    <script>
+      app.controller('NavbarController', ['$scope', function ($scope) {
+        // Periksa apakah token ada di localStorage
+        $scope.isLoggedIn = !!localStorage.getItem('token');
+
+        // Handle Login/Logout action
+        $scope.handleAuth = function () {
+          if ($scope.isLoggedIn) {
+            // Logout: Hapus token dan refresh halaman
+            localStorage.removeItem('token');
+            $scope.isLoggedIn = false;
+            window.location.href = 'index.html'; // Redirect ke halaman utama
+          } else {
+            // Login: Redirect ke halaman login
+            window.location.href = 'login.html';
+          }
+        };
+      }]);
+      
+      app.controller('RecipesController', ['$scope', '$http', function($scope, $http) {
+        $scope.recipes = []; // Inisialisasi array kosong
+
+        // Melakukan request ke endpoint get all recipes
+        $http.get(`${endpoint}recipes`) // Sesuaikan URL dengan endpoint Anda
+          .then(function(response) {
+            // Berhasil mengambil data
+            $scope.recipes = response.data.map(function(recipe) {
+              return {
+                id: recipe._id,
+                title: recipe.title,          // Nama resep
+                // slug: recipe.name.toLowerCase().replace(/ /g, '-'), // URL slug
+                photo: recipe.photo || './assets/recipes/rendang.jpeg', // Gambar resep (fallback jika tidak ada)
+                prepTime: recipe.prepTime, // Waktu persiapan
+                cookTime: recipe.cookTime  // Waktu memasak
+              };
+            });
+          })
+          .catch(function(error) {
+            console.error('Error fetching recipes:', error);
+          });
+      }]);
+    </script>
   </body>
 </html>
