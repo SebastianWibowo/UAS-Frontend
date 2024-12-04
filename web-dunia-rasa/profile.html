@@ -11,6 +11,7 @@
 <body>
   <div class="profile-container" ng-controller="ProfileController">
     <div class="profile-card">
+      
       <h2>Profile</h2>
       <div class="profile-info">
         <p><strong>Name:</strong> {{ profile.name }}</p>
@@ -20,6 +21,8 @@
                 Buat Resep
             </a>
         </p>
+        <button ng-click="deleteAccount()" class="btn btn-danger">Hapus Akun</button>
+        <p ng-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
         <p>
             <a href="javascript:void(0)" class="nav-link btn" ng-click="handleAuth()">
                 Logout

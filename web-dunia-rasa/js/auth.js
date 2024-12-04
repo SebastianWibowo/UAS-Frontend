@@ -71,6 +71,30 @@ app.controller('ProfileController', ['$scope', '$http', function ($scope, $http)
     $scope.isLoading = true;
     $scope.errorMessage = '';
 
+    //menghapus akun
+    $scope.deleteAccount = function () {
+    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        const token = localStorage.getItem('token'); // Mendapatkan token dari localStorage
+
+        // Konfigurasi header dengan Authorization
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        };
+
+        $http.delete(`${endpoint}delete`, config) // Memanggil endpoint delete
+            .then(function (response) {
+                alert(response.data.message);
+                localStorage.removeItem('token'); // Hapus token setelah penghapusan
+                window.location.href = 'index.html'; // Redirect ke halaman utama
+            })
+            .catch(function (error) {
+                $scope.errorMessage = error.data.error || 'Failed to delete account.';
+            });
+    }
+};
+
     // Periksa apakah token ada di localStorage
     $scope.isLoggedIn = !!localStorage.getItem('token');
 

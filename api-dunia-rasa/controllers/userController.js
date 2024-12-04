@@ -52,3 +52,17 @@ exports.profilUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 }
+
+//delete
+exports.deleteUser  = async (req, res) => {
+  try {
+    const userId = req.user.id; // Ambil ID pengguna dari token yang terautentikasi
+
+    // Hapus pengguna dari database
+    await User.findByIdAndDelete(userId);
+
+    res.status(200).json({ message: 'User  deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
