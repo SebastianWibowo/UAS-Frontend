@@ -70,6 +70,31 @@ app.controller('ProfileController', ['$scope', '$http', function ($scope, $http)
     $scope.favoriteRecipes = [];
     $scope.isLoading = true;
     $scope.errorMessage = '';
+    $scope.newName = '';
+    $scope.successMessage = '';
+
+    // update akun
+    $scope.updateName = function () {
+    const token = localStorage.getItem('token'); // Mendapatkan token dari localStorage
+
+    // Konfigurasi header dengan Authorization
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
+    $http.put(`${endpoint}update-name`, { name: $scope.newName }, config)
+      .then(function (response) {
+        $scope.successMessage = response.data.message;
+        $scope.errorMessage = '';
+        $scope.newName = ''; // Reset input
+      })
+      .catch(function (error) {
+        $scope.errorMessage = error.data.error || 'Failed to update name.';
+        $scope.successMessage = '';
+      });
+  };
 
     //menghapus akun
     $scope.deleteAccount = function () {
