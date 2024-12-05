@@ -1,116 +1,125 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About</title>
-    <!-- favicon -->
-    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
-    <!-- main css -->
-    <link rel="stylesheet" href="./css/main.css" />
-    <!-- normalize -->
-    <link rel="stylesheet" href="./css/normalize.css" />
-    <!-- font -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
-  </head>
-  <body>
-    <!-- nav  -->
-    <nav class="navbar">
-      <div class="nav-center" ng-controller="NavbarController">
-        <div class="nav-header">
-          <a href="index.html" class="nav-logo">
-            <img src="./assets/logo.svg" alt="Dunia Rasa" />
-          </a>
-          <button class="nav-btn btn">
-            <i class="fas fa-align-justify"></i>
-          </button>
-        </div>
-        <div class="nav-links">
-          <a href="index.html" class="nav-link"> Home </a>
-          <a href="about.html" class="nav-link"> About </a>
-          <a href="tags.html" class="nav-link"> Tags </a>
-          <a href="recipes.html" class="nav-link"> Recipes </a>
-          <a href="profile.html" class="nav-link" ng-if="isLoggedIn"> Profile </a>
-          <a href="javascript:void(0)" class="nav-link" ng-click="handleAuth()">
-            {{ isLoggedIn ? 'Logout' : 'Login' }}
-          </a>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+  <!-- main css -->
+  <link rel="stylesheet" href="./css/main.css" />
+  <!-- normalize -->
+  <link rel="stylesheet" href="./css/normalize.css" />
+  <!-- font -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+</head>
+
+<body>
+  <!-- nav  -->
+  <nav class="navbar">
+    <div class="nav-center" ng-controller="NavbarController">
+      <div class="nav-header">
+        <a href="index.html" class="nav-logo">
+          <img src="./assets/logo.svg" alt="Dunia Rasa" />
+        </a>
+        <button class="nav-btn btn">
+          <i class="fas fa-align-justify"></i>
+        </button>
       </div>
-    </nav>
-    <!-- end of nav -->
-    <!---main-->
-    <main class="page">
-      <section class="about-page">
-        <article>
-          <h2>Selamat datang di Dunia Rasa!</h2>
-          <p class="text-justify"> Kami adalah Kelompok 5, sekelompok mahasiswa yang memiliki semangat dan dedikasi dalam mengembangkan platform kuliner ini. Dunia Rasa diciptakan untuk menjadi sumber inspirasi bagi Anda yang mencari resep masakan, baik dari hidangan lokal Indonesia yang kaya rasa maupun dari mancanegara yang penuh variasi. </p>
-          <p class="text-justify"> Dengan beragam resep yang kami sajikan, kami berharap dapat membantu Anda dalam mengeksplorasi berbagai jenis masakan, dari yang sederhana hingga yang lebih kompleks. Dunia Rasa bukan hanya sekadar website resep, tetapi juga sebuah komunitas bagi pecinta kuliner untuk berbagi dan memperkaya pengalaman memasak. Terima kasih telah berkunjung, dan selamat mencoba berbagai rasa dari seluruh dunia! </p>
-        </article>
-        <!-- needs fixes -->
-        <img src="./assets/main.jpg" alt="foods in table" class="img about-img" />
-      </section>
-      <!-- recipes list -->
-      <div class="recipes-list" ng-controller="RecipesController">
-        <a ng-repeat="recipe in recipes" href="detail-receipt.html?id={{ recipe.id }}" class="recipe">
-          <img ng-src="{{ recipe.photo }}" class="img recipe-img" alt="{{ recipe.title }}" />
-          <h5>{{ recipe.title }}</h5>
-          <p>Prep : {{ recipe.prepTime }} min | Cook : {{ recipe.cookTime }} min</p>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link"> Home </a>
+        <a href="about.html" class="nav-link"> About </a>
+        <a href="tags.html" class="nav-link"> Tags </a>
+        <a href="recipes.html" class="nav-link"> Recipes </a>
+        <a href="profile.html" class="nav-link" ng-if="isLoggedIn"> Profile </a>
+        <a href="javascript:void(0)" class="nav-link" ng-click="handleAuth()">
+          {{ isLoggedIn ? 'Logout' : 'Login' }}
         </a>
       </div>
-      <!-- end of recipes list -->
-      <!--end of main-->
-    </main>
-    <!-- footer -->
-    <footer class="page-footer">
-      <p> &copy; <span id="date">2024</span>
-        <span class="footer-logo">Dunia Rasa</span> Built by <a href="javascript:void(0)">Kelompok 5</a>
-      </p>
-    </footer>
-    <!-- end of footer -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="./js/app.js"></script>
-    <script>
-      app.controller('NavbarController', ['$scope', function ($scope) {
-        // Periksa apakah token ada di localStorage
-        $scope.isLoggedIn = !!localStorage.getItem('token');
+    </div>
+  </nav>
+  <!-- end of nav -->
+  <!---main-->
+  <main class="page">
+    <section class="about-page">
+      <article>
+        <h2>Selamat datang di Dunia Rasa!</h2>
+        <p class="text-justify"> Kami adalah Kelompok 5, sekelompok mahasiswa yang memiliki semangat dan dedikasi dalam
+          mengembangkan platform kuliner ini. Dunia Rasa diciptakan untuk menjadi sumber inspirasi bagi Anda yang
+          mencari resep masakan, baik dari hidangan lokal Indonesia yang kaya rasa maupun dari mancanegara yang penuh
+          variasi. </p>
+        <p class="text-justify"> Dengan beragam resep yang kami sajikan, kami berharap dapat membantu Anda dalam
+          mengeksplorasi berbagai jenis masakan, dari yang sederhana hingga yang lebih kompleks. Dunia Rasa bukan hanya
+          sekadar website resep, tetapi juga sebuah komunitas bagi pecinta kuliner untuk berbagi dan memperkaya
+          pengalaman memasak. Terima kasih telah berkunjung, dan selamat mencoba berbagai rasa dari seluruh dunia! </p>
+      </article>
+      <!-- needs fixes -->
+      <img src="./assets/main.jpg" alt="foods in table" class="img about-img" />
+    </section>
+    <!-- recipes list -->
+    <div class="recipes-list" ng-controller="RecipesController">
+      <a ng-repeat="recipe in recipes" href="detail-receipt.html?id={{ recipe.id }}" class="recipe">
+        <img ng-src="{{ recipe.photo }}" class="img recipe-img" alt="{{ recipe.title }}" />
+        <h5>{{ recipe.title }}</h5>
+        <p>Prep : {{ recipe.prepTime }} min | Cook : {{ recipe.cookTime }} min</p>
+      </a>
+    </div>
+    <!-- end of recipes list -->
+    <!--end of main-->
+  </main>
+  <!-- footer -->
+  <footer class="page-footer">
+    <p> &copy; <span id="date">2024</span>
+      <span class="footer-logo">Dunia Rasa</span> Built by <a href="404.html">Kelompok 5</a>
+    </p>
+  </footer>
+  <!-- end of footer -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="./js/app.js"></script>
+  <script>
+    app.controller('NavbarController', ['$scope', function ($scope) {
+      // Periksa apakah token ada di localStorage
+      $scope.isLoggedIn = !!localStorage.getItem('token');
 
-        // Handle Login/Logout action
-        $scope.handleAuth = function () {
-          if ($scope.isLoggedIn) {
-            // Logout: Hapus token dan refresh halaman
-            localStorage.removeItem('token');
-            $scope.isLoggedIn = false;
-            window.location.href = 'index.html'; // Redirect ke halaman utama
-          } else {
-            // Login: Redirect ke halaman login
-            window.location.href = 'login.html';
-          }
-        };
-      }]);
-      
-      app.controller('RecipesController', ['$scope', '$http', function($scope, $http) {
-        $scope.recipes = []; // Inisialisasi array kosong
+      // Handle Login/Logout action
+      $scope.handleAuth = function () {
+        if ($scope.isLoggedIn) {
+          // Logout: Hapus token dan refresh halaman
+          localStorage.removeItem('token');
+          $scope.isLoggedIn = false;
+          window.location.href = 'index.html'; // Redirect ke halaman utama
+        } else {
+          // Login: Redirect ke halaman login
+          window.location.href = 'login.html';
+        }
+      };
+    }]);
 
-        // Melakukan request ke endpoint get all recipes
-        $http.get(`${endpoint}recipes`) // Sesuaikan URL dengan endpoint Anda
-          .then(function(response) {
-            // Berhasil mengambil data
-            $scope.recipes = response.data.map(function(recipe) {
-              return {
-                id: recipe._id,
-                title: recipe.title,          // Nama resep
-                // slug: recipe.name.toLowerCase().replace(/ /g, '-'), // URL slug
-                photo: recipe.photo || './assets/recipes/rendang.jpeg', // Gambar resep (fallback jika tidak ada)
-                prepTime: recipe.prepTime, // Waktu persiapan
-                cookTime: recipe.cookTime  // Waktu memasak
-              };
-            });
-          })
-          .catch(function(error) {
-            console.error('Error fetching recipes:', error);
+    app.controller('RecipesController', ['$scope', '$http', function ($scope, $http) {
+      $scope.recipes = []; // Inisialisasi array kosong
+
+      // Melakukan request ke endpoint get all recipes
+      $http.get(`${endpoint}recipes`) // Sesuaikan URL dengan endpoint Anda
+        .then(function (response) {
+          // Berhasil mengambil data
+          $scope.recipes = response.data.map(function (recipe) {
+            return {
+              id: recipe._id,
+              title: recipe.title,          // Nama resep
+              // slug: recipe.name.toLowerCase().replace(/ /g, '-'), // URL slug
+              photo: recipe.photo || './assets/recipes/rendang.jpeg', // Gambar resep (fallback jika tidak ada)
+              prepTime: recipe.prepTime, // Waktu persiapan
+              cookTime: recipe.cookTime  // Waktu memasak
+            };
           });
-      }]);
-    </script>
-  </body>
+        })
+        .catch(function (error) {
+          console.error('Error fetching recipes:', error);
+        });
+    }]);
+  </script>
+</body>
+
 </html>

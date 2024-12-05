@@ -1,118 +1,121 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title ng-controller="RecipesController">{{ tagName }} </title>
-    <!-- favicon -->
-    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
-    <!-- main css -->
-    <link rel="stylesheet" href="./css/main.css" />
-    <!-- normalize -->
-    <link rel="stylesheet" href="./css/normalize.css" />
-    <!-- font-awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
-  </head>
-  <body>
-    <!-- nav  -->
-    <nav class="navbar">
-      <div class="nav-center" ng-controller="NavbarController">
-        <div class="nav-header">
-          <a href="index.html" class="nav-logo">
-            <img src="./assets/logo.svg" alt="Dunia Rasa" />
-          </a>
-          <button class="nav-btn btn">
-            <i class="fas fa-align-justify"></i>
-          </button>
-        </div>
-        <div class="nav-links">
-          <a href="index.html" class="nav-link"> Home </a>
-          <a href="about.html" class="nav-link"> About </a>
-          <a href="tags.html" class="nav-link"> Tags </a>
-          <a href="recipes.html" class="nav-link"> Recipes </a>
-          <a href="profile.html" class="nav-link" ng-if="isLoggedIn"> Profile </a>
-          <a href="javascript:void(0)" class="nav-link" ng-click="handleAuth()">
-            {{ isLoggedIn ? 'Logout' : 'Login' }}
-          </a>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title ng-controller="RecipesController">{{ tagName }} </title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
+  <!-- main css -->
+  <link rel="stylesheet" href="./css/main.css" />
+  <!-- normalize -->
+  <link rel="stylesheet" href="./css/normalize.css" />
+  <!-- font-awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+</head>
+
+<body>
+  <!-- nav  -->
+  <nav class="navbar">
+    <div class="nav-center" ng-controller="NavbarController">
+      <div class="nav-header">
+        <a href="index.html" class="nav-logo">
+          <img src="./assets/logo.svg" alt="Dunia Rasa" />
+        </a>
+        <button class="nav-btn btn">
+          <i class="fas fa-align-justify"></i>
+        </button>
       </div>
-    </nav>
-    <!-- end of nav -->
-    <main class="page">
-      <div class="featured-recipes">
-        <h4 ng-controller="RecipesController">{{ tagName }}</h4>
-        <!-- recipes list -->
-        <div class="recipes-list" ng-controller="RecipesController">
-          <a ng-repeat="recipe in recipes" href="detail-receipt.html?id={{ recipe.id }}" class="recipe">
-            <img ng-src="{{ recipe.photo }}" class="img recipe-img" alt="{{ recipe.title }}" />
-            <h5>{{ recipe.title }}</h5>
-            <p>Prep : {{ recipe.prepTime }} min | Cook : {{ recipe.cookTime }} min</p>
-          </a>
-        </div>
-        <!-- end of recipes list -->
-        </section>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link"> Home </a>
+        <a href="about.html" class="nav-link"> About </a>
+        <a href="tags.html" class="nav-link"> Tags </a>
+        <a href="recipes.html" class="nav-link"> Recipes </a>
+        <a href="profile.html" class="nav-link" ng-if="isLoggedIn"> Profile </a>
+        <a href="javascript:void(0)" class="nav-link" ng-click="handleAuth()">
+          {{ isLoggedIn ? 'Logout' : 'Login' }}
+        </a>
       </div>
-    </main>
-    <!-- footer -->
-    <footer class="page-footer">
-      <p> &copy; <span id="date">2024</span>
-        <span class="footer-logo">Dunia Rasa</span> Built by <a href="javascript:void(0)">Kelompok 5</a>
-      </p>
-    </footer>
-    <!-- end of footer -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="./js/app.js"></script>
-    <script>
-      function getQueryParam(param) {
-        var urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-      }
+    </div>
+  </nav>
+  <!-- end of nav -->
+  <main class="page">
+    <div class="featured-recipes">
+      <h4 ng-controller="RecipesController">{{ tagName }}</h4>
+      <!-- recipes list -->
+      <div class="recipes-list" ng-controller="RecipesController">
+        <a ng-repeat="recipe in recipes" href="detail-receipt.html?id={{ recipe.id }}" class="recipe">
+          <img ng-src="{{ recipe.photo }}" class="img recipe-img" alt="{{ recipe.title }}" />
+          <h5>{{ recipe.title }}</h5>
+          <p>Prep : {{ recipe.prepTime }} min | Cook : {{ recipe.cookTime }} min</p>
+        </a>
+      </div>
+      <!-- end of recipes list -->
+      </section>
+    </div>
+  </main>
+  <!-- footer -->
+  <footer class="page-footer">
+    <p> &copy; <span id="date">2024</span>
+      <span class="footer-logo">Dunia Rasa</span> Built by <a href="404.html">Kelompok 5</a>
+    </p>
+  </footer>
+  <!-- end of footer -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="./js/app.js"></script>
+  <script>
+    function getQueryParam(param) {
+      var urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
 
-      app.controller('NavbarController', ['$scope', function ($scope) {
-        // Periksa apakah token ada di localStorage
-        $scope.isLoggedIn = !!localStorage.getItem('token');
+    app.controller('NavbarController', ['$scope', function ($scope) {
+      // Periksa apakah token ada di localStorage
+      $scope.isLoggedIn = !!localStorage.getItem('token');
 
-        // Handle Login/Logout action
-        $scope.handleAuth = function () {
-          if ($scope.isLoggedIn) {
-            // Logout: Hapus token dan refresh halaman
-            localStorage.removeItem('token');
-            $scope.isLoggedIn = false;
-            window.location.href = 'index.html'; // Redirect ke halaman utama
-          } else {
-            // Login: Redirect ke halaman login
-            window.location.href = 'login.html';
-          }
-        };
-      }]);
+      // Handle Login/Logout action
+      $scope.handleAuth = function () {
+        if ($scope.isLoggedIn) {
+          // Logout: Hapus token dan refresh halaman
+          localStorage.removeItem('token');
+          $scope.isLoggedIn = false;
+          window.location.href = 'index.html'; // Redirect ke halaman utama
+        } else {
+          // Login: Redirect ke halaman login
+          window.location.href = 'login.html';
+        }
+      };
+    }]);
 
-      app.controller('RecipesController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-        // Ambil parameter tag dari URL
-        var tagName = getQueryParam('tags') || 'All Recipes';
-        $scope.tagName = tagName
+    app.controller('RecipesController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+      // Ambil parameter tag dari URL
+      var tagName = getQueryParam('tags') || 'All Recipes';
+      $scope.tagName = tagName
 
-        // Inisialisasi array untuk menyimpan resep
-        $scope.recipes = [];
+      // Inisialisasi array untuk menyimpan resep
+      $scope.recipes = [];
 
-        // Panggil endpoint untuk mendapatkan resep berdasarkan tag
-        $http.get(`${endpoint}recipes/filter?tags=` + tagName)
-          .then(function (response) {
-            $scope.recipes = response.data.map(function(recipe) {
-              return {
-                id: recipe._id,
-                title: recipe.title,          // Nama resep
-                // slug: recipe.name.toLowerCase().replace(/ /g, '-'), // URL slug
-                photo: recipe.photo || './assets/recipes/rendang.jpeg', // Gambar resep (fallback jika tidak ada)
-                prepTime: recipe.prepTime, // Waktu persiapan
-                cookTime: recipe.cookTime  // Waktu memasak
-              };
-            });
-          })
-          .catch(function (error) {
-            console.error('Error fetching recipes:', error);
+      // Panggil endpoint untuk mendapatkan resep berdasarkan tag
+      $http.get(`${endpoint}recipes/filter?tags=` + tagName)
+        .then(function (response) {
+          $scope.recipes = response.data.map(function (recipe) {
+            return {
+              id: recipe._id,
+              title: recipe.title,          // Nama resep
+              // slug: recipe.name.toLowerCase().replace(/ /g, '-'), // URL slug
+              photo: recipe.photo || './assets/recipes/rendang.jpeg', // Gambar resep (fallback jika tidak ada)
+              prepTime: recipe.prepTime, // Waktu persiapan
+              cookTime: recipe.cookTime  // Waktu memasak
+            };
           });
-      }]);
-    </script>
-  </body>
+        })
+        .catch(function (error) {
+          console.error('Error fetching recipes:', error);
+        });
+    }]);
+  </script>
+</body>
+
 </html>
