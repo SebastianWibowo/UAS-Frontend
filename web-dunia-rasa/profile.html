@@ -29,9 +29,12 @@
             </a>
         </p>
       </div>
-      <div class="update-name-container" ng-controller="ProfileController">
+      <div class="update-name-container">
+        <h3>Update Name</h3>
         <form ng-submit="updateName()">
-          <input type="text" ng-model="newName" placeholder="Enter new name" required />
+          <div class="form-group">
+            <input type="text" ng-model="newName" placeholder="Enter new name" required />
+          </div>
           <button type="submit" class="btn">Update Name</button>
           <p class="success-message" ng-show="successMessage">{{ successMessage }}</p>
           <p class="error-message" ng-show="errorMessage">{{ errorMessage }}</p>

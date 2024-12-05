@@ -15,18 +15,35 @@ app.controller('LoginController', ['$scope', '$http', '$window', function ($scop
     $scope.errorMessage = '';
 
     $scope.login = function () {
-    $http.post(`${endpoint}login`, $scope.loginData)
-        .then(function (response) {
-        // Jika login berhasil, redirect atau simpan token
-        alert('Login successful!');
-        localStorage.setItem('token', response.data.token); // Simpan token jika diperlukan
-        window.location.href = './index.html'; // Ganti ke halaman tujuan setelah login
-        })
-        .catch(function (error) {
-        // Tampilkan pesan error jika login gagal
-        $scope.errorMessage = error.data.message || 'Login failed. Please try again.';
-        });
+        $http.post(`${endpoint}login`, $scope.loginData)
+            .then(function (response) {
+                // Jika login berhasil, simpan token dan tampilkan pesan sukses
+                localStorage.setItem('token', response.data.token); // Simpan token jika diperlukan
+                showMessage('Login successful! Redirecting...', 'success'); // Tampilkan pesan sukses
+
+                // Tampilkan pesan sukses selama 2 detik
+                setTimeout(function() {
+                    window.location.href = './index.html'; // Ganti ke halaman tujuan setelah login
+                }, 2000); // 2000 ms = 2 detik
+            })
+            .catch(function (error) {
+                // Tampilkan pesan error jika login gagal
+                $scope.errorMessage = error.data.message || 'Login failed. Please try again.';
+                showMessage($scope.errorMessage, 'error'); // Tampilkan pesan error
+            });
     };
+
+    function showMessage(message, type) {
+        const messageBox = document.createElement('div');
+        messageBox.className = `message-box ${type}`;
+        messageBox.innerText = message;
+        document.body.prepend(messageBox);
+
+        // Hapus pesan setelah 3 detik
+        setTimeout(() => {
+            messageBox.remove();
+        }, 3000);
+    }
 }]);
 
 app.controller('RegisterController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
